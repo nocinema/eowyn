@@ -466,3 +466,18 @@ csmall2 {
 	padding-right: 15px;
 	font-size: 18px;
 }
+
+.select-cinema {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: auto;
+    padding: 5px 10px 5px 5px;
+    height: 34px;
+    border-radius: 5px;
+    border: 0;
+    background-color: #384452;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    
+}
