@@ -399,6 +399,14 @@ csmall2 {
 	background: #00b3fe;
 }
 
+.badge-3d {
+	background: #F39C12;
+}
+
+.badge-dub {
+	background: #384452;
+}
+
 /* Contact Page */
 #contactwrap {
 	background: url(../img/contact.jpg) no-repeat center top;
