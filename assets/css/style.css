@@ -472,7 +472,7 @@ csmall2 {
     -moz-appearance: none;
     appearance: none;
     width: auto;
-    padding: 5px 10px 5px 5px;
+    padding: 5px 30px 5px 5px;
     height: 34px;
     border-radius: 5px;
     border: 0;
@@ -480,4 +480,15 @@ csmall2 {
     color: white;
     font-family: 'Raleway', sans-serif;
     
+}
+
+.title-movie {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.dropdown-arrow {
+    color: #FFFFFF;    
+    margin-left: -15px;
 }
