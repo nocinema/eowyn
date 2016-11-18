@@ -1,3 +1,5 @@
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
     entry: './app/main',
     output: {
@@ -13,12 +15,20 @@ module.exports = {
 	    }
 	}, {
           test: /\.html$/,
+	  exclude: /node_modules/,
 	  loader: 'raw'
+	}, {
+	  test: /\.scss$/,
+	  exclude: /node_modules/,
+	  loaders: ['style', 'css', 'sass']
 	}]
     },
     resolve: {
         alias: {
 	    'vue$': 'vue/dist/vue.js'
 	}
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin('app/css/main.css')
+    ]
 }
