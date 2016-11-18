@@ -1,0 +1,25 @@
+.select-cinema {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: auto;
+    padding: 5px 30px 5px 5px;
+    height: 34px;
+    border-radius: 5px;
+    border: 0;
+    background-color: #384452;
+    color: white;
+    font-family: $font-raleway;
+}
+
+.title-movie {
+    font-family: $font-raleway;
+    font-weight: 700;
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.dropdown-arrow {
+    color: #FFFFFF;    
+    margin-left: -15px;
+}

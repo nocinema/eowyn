@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body { 
+  background: #ffffff; 
+  margin: 0; 
+  height: 100%; 
+  color: #384452;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-raleway;
+  font-weight: 700;
+}
+
+a { 
+  padding: 0;
+  margin: 0;
+  text-decoration: none; 
+  transition: background-color .4s linear, color .4s linear;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+  color: #01b2fe;
+}
+
+::selection {
+	color: #fff;
+	text-shadow: none;
+	background: #2B2E31;
+}
+
+.centered {
+	text-align: center
+}
