@@ -1,10 +1,14 @@
 import Vue from 'vue';
 
-import AppComponent from './components/app-component/app-component.js';
+import MiddleComponent from './components/middle-component/middle-component.js';
+import MovieScheduleComponent from './components/movie-schedule-component/movie-schedule-component.js';
 
-new Vue({
+import MainCSS from './css/main.scss';
+
+let nocinemaApp = new Vue({
     el: '#app',
     components: {
-        'app-component': AppComponent
+	'middle-component': MiddleComponent,
+        'movie-schedule-component': MovieScheduleComponent
     }
 });
