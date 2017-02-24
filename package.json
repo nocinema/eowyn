@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "bulma": "^0.1.0",
-    "vue": "^2.0.5"
+    "vue": "^2.0.5",
+    "vue-resource": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
