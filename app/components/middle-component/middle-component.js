@@ -9,7 +9,8 @@ const AppComponent = Vue.extend({
     template,
     data() {
         return {
-	    city: 'Florianópolis'
+	    city: 'Florianópolis',
+	    cinema: 'Cinemark'
 	}
     } 
 });
