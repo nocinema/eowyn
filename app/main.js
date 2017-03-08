@@ -1,14 +1,36 @@
+// Vue resources
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import MiddleComponent from './components/middle-component/middle-component.js';
-import MovieScheduleComponent from './components/movie-schedule-component/movie-schedule-component.js';
+// Components
+import HeaderComponent from './components/header/header.js';
+import MiddleComponent from './components/middle/middle.js';
+import MovieScheduleComponent from './components/movie-schedule/movie-schedule.js';
 
+
+// Main scss with components styles imported
 import MainCSS from './css/main.scss';
 
+// Use of vue resources
+Vue.use(VueRouter);
+
+// Routes
+const routes = [
+    { path: '/home', alias: '/', component: Vue.component('movie-schedule') },
+    { path: '/sobre', component: Vue.component('movie-schedule') },
+    { path: '/cidade/:city/cinema/:cinema', component: Vue.component('movie-schedule') }
+];
+
+const router = new VueRouter({
+    routes
+});
+
+// Instance of main app with components
 let nocinemaApp = new Vue({
-    el: '#app',
+    el: '#nocinemaApp',
+    router,
     components: {
-	'middle-component': MiddleComponent,
-        'movie-schedule-component': MovieScheduleComponent
+        'header-component': HeaderComponent,
+        'middle-component': MiddleComponent
     }
 });
