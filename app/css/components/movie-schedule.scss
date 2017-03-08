@@ -1,12 +1,39 @@
 #cinema-schedule {
     #movie-schedule {
-	border: 0;
-	width: 100%;
+       border: 0;
+       width: 100%;
 
-	thead {
-	    font-size: 14px;
-	    font-weight: 500;
-	    border-bottom: 1px solid #384452;
-	}
+        .place-title {
+            margin-bottom: 5px;
+        }
+
+        thead {
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid #384452;
+
+            tr td {
+                font-weight: 700;
+            }
+        }
+
+        tbody {
+            tr {
+                // height: 10px;
+                border-collapse: separate;
+                border-radius: 0;
+
+                td {
+                    padding: 5px 0 8px 0;
+                    border-bottom: 1px dotted #333;
+                }
+
+                .label {
+                    margin-right: 10px;
+                }
+            }
+        }
+
+
     }
 }
