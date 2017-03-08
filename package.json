@@ -6,7 +6,8 @@
   "dependencies": {
     "bulma": "^0.1.0",
     "vue": "^2.0.5",
-    "vue-resource": "^1.2.0"
+    "vue-resource": "^1.2.0",
+    "vue-router": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
@@ -22,7 +23,10 @@
     "webpack": "^1.13.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "live": "live-server app/",
+    "watch:build": "webpack --watch",
+    "dev": "npm run live & npm run watch:build"
   },
   "repository": {
     "type": "git",
