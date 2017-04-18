@@ -22,7 +22,9 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    routes
+    routes,
+    hashbang: false,
+    mode: 'history'
 });
 
 // Instance of main app with components

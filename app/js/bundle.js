@@ -86,7 +86,9 @@
 	var routes = [{ path: '/home', alias: '/', component: _vue2.default.component('movie-schedule') }, { path: '/sobre', component: _vue2.default.component('movie-schedule') }, { path: '/cidade/:city/cinema/:cinema', component: _vue2.default.component('movie-schedule') }];
 
 	var router = new _vueRouter2.default({
-	    routes: routes
+	    routes: routes,
+	    hashbang: false,
+	    mode: 'history'
 	});
 
 	// Instance of main app with components
@@ -11870,57 +11872,20 @@
 	    template: _movieScheduleTemplate2.default,
 	    data: function data() {
 	        return {
-	            schedule: this.sessions
+	            schedules: []
 	        };
 	    },
 	    created: function created() {
 	        console.log('Component created.');
 	    },
 	    beforeMount: function beforeMount() {
-	        this.sessions = [{
-	            "title": "A Era do Gelo: O Big Bang",
-	            "censorship": "Livre",
-	            "special": false,
-	            "hours": ["12h50", "17h30"]
-	        }, {
-	            "title": "A Era do Gelo: O Big Bang 3D",
-	            "censorship": "Dublado",
-	            "special": true,
-	            "hours": ["15h10", "19h50"]
-	        }, {
-	            "title": "A Lenda de Tarzan 3D",
-	            "censorship": "Dublado",
-	            "special": true,
-	            "hours": ["13h30", "18h50"]
-	        }, {
-	            "title": "A Lenda de Tarzan",
-	            "censorship": "12 Anos",
-	            "special": false,
-	            "hours": ["20h50"]
-	        }, {
-	            "title": "A Lenda de Tarzan 3D",
-	            "censorship": "Legendado",
-	            "special": true,
-	            "hours": ["16h10", "21h40"]
-	        }, {
-	            "title": "Carrossel 2 - O Sumiço de Maria Joaquina",
-	            "censorship": "Livre",
-	            "special": false,
-	            "hours": ["13h40", "16h00", "18h30"]
-	        }, {
-	            "title": "Caça-Fantasmas 3D",
-	            "censorship": "Dublado",
-	            "special": true,
-	            "hours": ["13h00", "18h20"]
-	        }];
-	        //     this.$http
-	        // 	    .get('http://api.nocinema.info/programacao/cidade/florianopolis')
-	        // 	    .then((response) => {
-	        // 	        console.log(response);
-	        // 	    })
-	        // 	    .catch((err) => {
-	        // 	        console.log(err);
-	        // });
+	        var _this = this;
+
+	        this.$http.get('http://nocinema.info:3000/programacao/cidade/florianopolis').then(function (response) {
+	            _this.schedules = response.data;
+	        }).catch(function (err) {
+	            console.log(err);
+	        });
 	    }
 	});
 
@@ -13470,7 +13435,7 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"row\">\n\t<div class=\"alert alert-info\" role=\"alert\"><strong>Próxima sessão</strong> em Florianópolis: A Garota no Trem às 14h no Beiramar Shopping</div>\n\t\n\t<h1 class=\"place-title\">Floripa Shopping</h1>\n\t\n\t<div id=\"cinema-schedule\">\n\t    <table id=\"movie-schedule\">\n\t\t\t<thead>\n\t\t\t    <tr>\n\t\t\t\t\t<td>Filmes</td>\n\t\t\t\t\t<td>Versão</td>\n\t\t\t\t\t<td>Horários</td>\n\t\t\t    </tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t    <tr v-for=\"session in sessions\">\n\t\t\t\t\t<td>\n\t\t\t\t\t\t{{ session.title }}\n\t\t\t\t\t\t<span class=\"label label-success\" v-if=\"session.special\">3D</span>\n\t\t\t\t\t\t<span class=\"label label-danger\" v-if=\"session.censorship\">{{ session.censorship }}</span>\n\t\t\t\t\t</td>\n\t\t\t\t\t<td><span class=\"label label-default\" title=\"Tooltip on left\">{{ session.censorship }}</span></td>\n\t\t\t\t\t<td><span class=\"label label-info\" title=\"Tooltip on left\" v-for=\"hour in session.hours\">{{ hour }}</span></td>\n\t\t\t    </tr>\n\t\t\t</tbody>\n\t    </table>\n\t</div>\n</div>\n"
+	module.exports = "<div class=\"row\">\n\t<div class=\"alert alert-info\" role=\"alert\"><strong>Próxima sessão</strong> em Florianópolis: A Garota no Trem às 14h no Beiramar Shopping</div>\n\n\t<div v-for=\"schedule in schedules\">\n\t\t<h1 class=\"place-title\">{{schedule.place}}</h1>\n\t\t\n\t\t<div id=\"cinema-schedule\">\n\t\t    <table id=\"movie-schedule\">\n\t\t\t\t<thead>\n\t\t\t\t    <tr>\n\t\t\t\t\t\t<td>Filmes</td>\n\t\t\t\t\t\t<td>Versão</td>\n\t\t\t\t\t\t<td>Horários</td>\n\t\t\t\t    </tr>\n\t\t\t\t</thead>\n\t\t\t\t<tbody>\n\t\t\t\t    <tr v-for=\"session in schedule.sessions\">\n\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t{{ session.title }}\n\t\t\t\t\t\t\t<span class=\"label label-success\" v-if=\"session.special\">3D</span>\n\t\t\t\t\t\t\t<span class=\"label label-danger\" v-if=\"session.censorship\">{{ session.censorship }}</span>\n\t\t\t\t\t\t</td>\n\t\t\t\t\t\t<td><span class=\"label label-default\" title=\"Tooltip on left\">{{ session.censorship }}</span></td>\n\t\t\t\t\t\t<td><span class=\"label label-info\" title=\"Tooltip on left\" v-for=\"hour in session.hours\">{{ hour }}</span></td>\n\t\t\t\t    </tr>\n\t\t\t\t</tbody>\n\t\t    </table>\n\t\t</div>\n\t</div>\t\n</div>\n"
 
 /***/ },
 /* 12 */
