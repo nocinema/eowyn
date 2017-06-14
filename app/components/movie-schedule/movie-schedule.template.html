@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="alert alert-info" role="alert"><strong>Próxima sessão</strong> em Florianópolis: A Garota no Trem às 14h no Beiramar Shopping</div>
+  <div v-if="next" class="alert alert-info" role="alert"><strong>Próxima sessão</strong> em {{next.city}}: {{next.title}} às {{next.hour}} no {{next.place}}</div>
 
 	<div v-for="schedule in schedules">
 		<h1 class="place-title">{{schedule.place}}</h1>
@@ -9,7 +9,6 @@
 				<thead>
 				    <tr>
 						<td>Filmes</td>
-						<td>Versão</td>
 						<td>Horários</td>
 				    </tr>
 				</thead>
@@ -20,7 +19,6 @@
 							<span class="label label-success" v-if="session.special">3D</span>
 							<span class="label label-danger" v-if="session.censorship">{{ session.censorship }}</span>
 						</td>
-						<td><span class="label label-default" title="Tooltip on left">{{ session.censorship }}</span></td>
 						<td><span class="label label-info" title="Tooltip on left" v-for="hour in session.hours">{{ hour }}</span></td>
 				    </tr>
 				</tbody>
