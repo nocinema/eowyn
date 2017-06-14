@@ -18,7 +18,7 @@ Vue.use(VueRouter);
 const routes = [
     { path: '/home', alias: '/', component: Vue.component('movie-schedule') },
     { path: '/sobre', component: Vue.component('movie-schedule') },
-    { path: '/cidade/:city/cinema/:cinema', component: Vue.component('movie-schedule') }
+    { path: '/cidade/:city', component: Vue.component('movie-schedule') }
 ];
 
 const router = new VueRouter({
