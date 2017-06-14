@@ -34,11 +34,25 @@
 }
 
 .dropdown-menu {
+  font-family: $font-raleway;
   background: #384452;
+
+  li {
+    color: white;
+    a {
+      color: white;
+  font-family: 'Lato', sans-serif;
+    }
+  }
 }
 
-.dropdown-menu > li > a {
-  color: white;
-  font-weight: 700;
-  font-size: 12px;
+.dropdown {
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+  }
+
+  &:hover > ul {
+    display: inherit;
+  }
 }
