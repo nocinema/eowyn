@@ -17,26 +17,29 @@ const MovieScheduleComponent = Vue.component('movie-schedule', {
             next: {}
 	    }
     },
-    created() {
-        console.log('Component created.');
-    },
     beforeMount() {
-        this.$http.get('http://localhost:3000/programacao/cidade/florianopolis')
-    	    .then((response) => {
-    	        this.schedules = response.data;
-    	    })
-    	    .catch((err) => {
-    	        console.log(err);
-        });
+        this.fetchSchedules();
+    },
+    methods: {
+        fetchSchedules() {
+            this.$http.get(`http://localhost:3000/programacao/cidade/${this.$route.params.city}`)
+              .then((response) => {
+                  this.schedules = response.data;
+              })
+              .catch((err) => {
+                  console.log(err);
+            });
 
-        this.$http.get('http://localhost:3000/programacao/cidade/florianopolis/proxima')
-          .then((response) => {
-              this.next = response.data;
-          })
-          .catch((err) => {
-              console.log(err);
-        });
-
+            this.$http.get(`http://localhost:3000/programacao/cidade/${this.$route.params.city}/proxima`)
+              .then((response) => {
+                  this.next = response.data;
+              })
+              .catch((err) => {
+                  console.log(err);
+            });        }
+    },
+    watch: {
+        '$route': 'fetchSchedules'
     }
 });
 
