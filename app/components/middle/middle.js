@@ -9,10 +9,16 @@ const MiddleComponent = Vue.extend({
     template,
     data() {
         return {
-    	    city: 'Florianópolis',
-    	    cinema: 'Cinemark'
+          title: 'NoCinema'
 	    }
-    } 
+    },
+    beforeMount() {
+        if (!this.$route.params.city) {
+            this.title = 'NoCinema';
+        } else {
+            this.title = this.$route.params.city;
+        }
+    }
 });
 
 export default MiddleComponent;
