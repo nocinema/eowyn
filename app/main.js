@@ -16,15 +16,15 @@ Vue.use(VueRouter);
 
 // Routes
 const routes = [
-    { path: '/home', alias: '/', component: Vue.component('movie-schedule') },
+    { path: '/home', alias: '/', component: Vue.component('home') },
     { path: '/sobre', component: Vue.component('movie-schedule') },
-    { path: '/cidade/:city', component: Vue.component('movie-schedule') }
+    { path: '/cidade/:city', name: 'schedule', component: Vue.component('movie-schedule') }
 ];
 
 const router = new VueRouter({
     routes,
-    hashbang: false,
-    mode: 'history'
+    base: window.location.href,
+    mode: 'hash'
 });
 
 // Instance of main app with components
