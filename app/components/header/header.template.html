@@ -3,23 +3,23 @@
         <div class="navbar-header">
             <a href="index.html" title="NoCinema - Todas as programações disponíveis em um só lugar!"><img width="50" src="assets/nocinema.svg" /></a>
         </div>
-        
+
         <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
                 <li>
-                  <router-link to="/home">PÁGINA INICIAL</router-link>
+                  <router-link :to="'home'">PÁGINA INICIAL</router-link>
                 </li>
                 <li>
-                  <router-link to="/about">SOBRE</router-link>
+                  <router-link :to="'about'">SOBRE</router-link>
                 </li>
                 <li>
-                  <router-link to="/contact">CONTATO</router-link>
+                  <router-link :to="'contact'">CONTATO</router-link>
                 </li>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">CIDADES<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <li v-for="city in cities">
-                        <router-link :to="{ name: schedule, params: { cidade: city } }">{{city}}</router-link>
+                        <router-link :to="{ name: 'schedule', params: { city: city.normalized } }">{{city.name}}</router-link>
                       </li>
                     </ul>
                 </li>
