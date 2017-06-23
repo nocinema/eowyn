@@ -18,14 +18,9 @@
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">CIDADES<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="blog.html">BLOG</a>
-                        </li>
-                        <li><a href="single-post.html">SINGLE POST</a>
-                        </li>
-                        <li><a href="portfolio.html">PORTFOLIO</a>
-                        </li>
-                        <li><a href="single-project.html">SINGLE PROJECT</a>
-                        </li>
+                      <li v-for="city in cities">
+                        <router-link :to="{ name: schedule, params: { cidade: city } }">{{city}}</router-link>
+                      </li>
                     </ul>
                 </li>
             </ul>

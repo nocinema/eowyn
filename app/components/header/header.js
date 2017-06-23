@@ -9,10 +9,19 @@ const HeaderComponent = Vue.extend({
     template,
     data() {
         return {
-    	    city: 'Florianópolis',
-    	    cinema: 'Cinemark'
-	    }
-    } 
+          cities: [],
+          schedule: ''
+        }
+    },
+    beforeMount() {
+         this.$http.get('http://localhost:3030/cidades')
+          .then((response) => {
+              this.cities = response.data;
+          })
+          .catch((err) => {
+              console.log(err);
+        });
+    }
 });
 
 export default HeaderComponent;
