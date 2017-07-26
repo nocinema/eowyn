@@ -66,7 +66,15 @@
 
 	var _movieSchedule2 = _interopRequireDefault(_movieSchedule);
 
-	var _main = __webpack_require__(12);
+	var _home = __webpack_require__(12);
+
+	var _home2 = _interopRequireDefault(_home);
+
+	var _footer = __webpack_require__(14);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	var _main = __webpack_require__(16);
 
 	var _main2 = _interopRequireDefault(_main);
 
@@ -83,12 +91,11 @@
 
 
 	// Main scss with components styles imported
-	var routes = [{ path: '/home', alias: '/', component: _vue2.default.component('movie-schedule') }, { path: '/sobre', component: _vue2.default.component('movie-schedule') }, { path: '/cidade/:city', component: _vue2.default.component('movie-schedule') }];
+	var routes = [{ path: '/home', alias: '/', name: 'home', component: _vue2.default.component('home') }, { path: '/sobre', name: 'about', component: _vue2.default.component('movie-schedule') }, { path: '/cidade/:city', name: 'schedule', component: _vue2.default.component('movie-schedule') }];
 
 	var router = new _vueRouter2.default({
 	    routes: routes,
-	    hashbang: false,
-	    mode: 'history'
+	    base: window.location.href
 	});
 
 	// Instance of main app with components
@@ -12482,9 +12489,18 @@
 	    template: _headerTemplate2.default,
 	    data: function data() {
 	        return {
-	            city: 'Florianópolis',
-	            cinema: 'Cinemark'
+	            cities: [],
+	            schedule: ''
 	        };
+	    },
+	    beforeMount: function beforeMount() {
+	        var _this = this;
+
+	        this.$http.get(("http://localhost:3030") + '/cidades').then(function (response) {
+	            _this.cities = response.data;
+	        }).catch(function (err) {
+	            console.log(err);
+	        });
 	    }
 	});
 
@@ -12495,7 +12511,7 @@
 /* 5 */
 /***/ (function(module, exports) {
 
-	module.exports = "<nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\">\n    <div class=\"container\">\n        <div class=\"navbar-header\">\n            <a href=\"index.html\" title=\"NoCinema - Todas as programações disponíveis em um só lugar!\"><img width=\"50\" src=\"assets/nocinema.svg\" /></a>\n        </div>\n        \n        <div class=\"navbar-collapse collapse navbar-right\">\n            <ul class=\"nav navbar-nav\">\n                <li>\n                  <router-link to=\"/home\">PÁGINA INICIAL</router-link>\n                </li>\n                <li>\n                  <router-link to=\"/about\">SOBRE</router-link>\n                </li>\n                <li>\n                  <router-link to=\"/contact\">CONTATO</router-link>\n                </li>\n                <li class=\"dropdown active\">\n                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">CIDADES<b class=\"caret\"></b></a>\n                    <ul class=\"dropdown-menu\">\n                        <li><a href=\"blog.html\">BLOG</a>\n                        </li>\n                        <li><a href=\"single-post.html\">SINGLE POST</a>\n                        </li>\n                        <li><a href=\"portfolio.html\">PORTFOLIO</a>\n                        </li>\n                        <li><a href=\"single-project.html\">SINGLE PROJECT</a>\n                        </li>\n                    </ul>\n                </li>\n            </ul>\n        </div>\n    </div>\n</nav>\n"
+	module.exports = "<nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\">\n    <div class=\"container\">\n        <div class=\"navbar-header\">\n            <a href=\"index.html\" title=\"NoCinema - Todas as programações disponíveis em um só lugar!\"><img width=\"50\" src=\"assets/nocinema.svg\" /></a>\n        </div>\n\n        <div class=\"navbar-collapse collapse navbar-right\">\n            <ul class=\"nav navbar-nav\">\n                <li>\n                  <router-link :to=\"'home'\">PÁGINA INICIAL</router-link>\n                </li>\n                <li>\n                  <router-link :to=\"'about'\">SOBRE</router-link>\n                </li>\n                <li>\n                  <router-link :to=\"'contact'\">CONTATO</router-link>\n                </li>\n                <li class=\"dropdown active\">\n                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">CIDADES<b class=\"caret\"></b></a>\n                    <ul class=\"dropdown-menu\">\n                      <li v-for=\"city in cities\">\n                        <router-link :to=\"{ name: 'schedule', params: { city: city.normalized } }\">{{city.name}}</router-link>\n                      </li>\n                    </ul>\n                </li>\n            </ul>\n        </div>\n    </div>\n</nav>\n"
 
 /***/ }),
 /* 6 */
@@ -12523,9 +12539,15 @@
 	    template: _middleTemplate2.default,
 	    data: function data() {
 	        return {
-	            city: 'Florianópolis',
-	            cinema: 'Cinemark'
+	            title: 'NoCinema'
 	        };
+	    },
+	    beforeMount: function beforeMount() {
+	        if (!this.$route.params.city) {
+	            this.title = 'NoCinema';
+	        } else {
+	            this.title = this.$route.params.city;
+	        }
 	    }
 	});
 
@@ -12536,7 +12558,7 @@
 /* 7 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div id=\"middle\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <h3 class=\"city-title\">{{city}} / {{cinema}}</h3>\n        </div>\n    </div>\n</div>"
+	module.exports = "<div id=\"middle\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <h3 class=\"city-title\">{{title}}</h3>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 /* 8 */
@@ -12565,12 +12587,13 @@
 	// Use of vue resources
 	_vue2.default.use(_vueResource2.default);
 
-	// Intance of movie schedule component
-
-
 	// Import templates
 	// Vue resources
-	var MovieScheduleComponent = _vue2.default.component('movie-schedule', {
+
+
+	console.log('API ', ("http://localhost:3030")
+	// Intance of movie schedule component
+	);var MovieScheduleComponent = _vue2.default.component('movie-schedule', {
 	    template: _movieScheduleTemplate2.default,
 	    data: function data() {
 	        return {
@@ -12578,23 +12601,29 @@
 	            next: {}
 	        };
 	    },
-	    created: function created() {
-	        console.log('Component created.');
-	    },
 	    beforeMount: function beforeMount() {
-	        var _this = this;
+	        this.fetchSchedules();
+	    },
 
-	        this.$http.get('http://localhost:3000/programacao/cidade/florianopolis').then(function (response) {
-	            _this.schedules = response.data;
-	        }).catch(function (err) {
-	            console.log(err);
-	        });
+	    methods: {
+	        fetchSchedules: function fetchSchedules() {
+	            var _this = this;
 
-	        this.$http.get('http://localhost:3000/programacao/cidade/florianopolis/proxima').then(function (response) {
-	            _this.next = response.data;
-	        }).catch(function (err) {
-	            console.log(err);
-	        });
+	            this.$http.get(("http://localhost:3030") + '/programacao/cidade/' + this.$route.params.city).then(function (response) {
+	                _this.schedules = response.data;
+	            }).catch(function (err) {
+	                console.log(err);
+	            });
+
+	            this.$http.get(("http://localhost:3030") + '/programacao/cidade/' + this.$route.params.city + '/proxima').then(function (response) {
+	                _this.next = response.data;
+	            }).catch(function (err) {
+	                console.log(err);
+	            });
+	        }
+	    },
+	    watch: {
+	        '$route': 'fetchSchedules'
 	    }
 	});
 
@@ -14190,13 +14219,88 @@
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _vue = __webpack_require__(1);
+
+	var _vue2 = _interopRequireDefault(_vue);
+
+	var _homeTemplate = __webpack_require__(13);
+
+	var _homeTemplate2 = _interopRequireDefault(_homeTemplate);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Instance of header component
+	// Vue resources
+	var HomeComponent = _vue2.default.component('home', {
+	    template: _homeTemplate2.default
+	});
+
+	// Import templates
+	exports.default = HomeComponent;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+	module.exports = "<h1>Hello bitches!</h1>\n"
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _vue = __webpack_require__(1);
+
+	var _vue2 = _interopRequireDefault(_vue);
+
+	var _footerTemplate = __webpack_require__(15);
+
+	var _footerTemplate2 = _interopRequireDefault(_footerTemplate);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Instance of header component
+	// Vue resources
+	var FooterComponent = _vue2.default.component('footer-component', {
+	    template: _footerTemplate2.default,
+	    data: function data() {
+	        return {
+	            cities: []
+	        };
+	    }
+	});
+
+	// Import templates
+	exports.default = FooterComponent;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div id=\"footerwrap\">\n <div class=\"container\">\n   <div class=\"row\">\n     <div class=\"col-lg-4\">\n       <h4>About</h4>\n       <div class=\"hline-w\"></div>\n       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>\n     </div>\n     <div class=\"col-lg-4\">\n       <h4>Social Links</h4>\n       <div class=\"hline-w\"></div>\n       <p>\n         <a href=\"#\"><i class=\"fa fa-dribbble\"></i></a>\n         <a href=\"#\"><i class=\"fa fa-facebook\"></i></a>\n         <a href=\"#\"><i class=\"fa fa-twitter\"></i></a>\n         <a href=\"#\"><i class=\"fa fa-instagram\"></i></a>\n         <a href=\"#\"><i class=\"fa fa-tumblr\"></i></a>\n       </p>\n     </div>\n     <div class=\"col-lg-4\">\n       <h4>Our Bunker</h4>\n       <div class=\"hline-w\"></div>\n       <p>\n         Some Ave, 987,<br/>\n         23890, New York,<br/>\n         United States.<br/>\n       </p>\n     </div>\n\n   </div>\n </div>\n</div>\n"
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(13);
+	var content = __webpack_require__(17);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(15)(content, {});
+	var update = __webpack_require__(19)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -14213,22 +14317,22 @@
 	}
 
 /***/ }),
-/* 13 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(14)();
+	exports = module.exports = __webpack_require__(18)();
 	// imports
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Raleway:400,700,900);", ""]);
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Lato:400,900);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #ffffff;\n  margin: 0;\n  height: 100%;\n  color: #384452;\n  font-family: 'Lato', sans-serif;\n  font-weight: 400; }\n\nh1, h2, h3, h4, h5, h6 {\n  font-family: \"Raleway\", sans-serif;\n  font-weight: 700; }\n\na {\n  padding: 0;\n  margin: 0;\n  text-decoration: none;\n  transition: background-color .4s linear, color .4s linear; }\n\na:hover,\na:focus {\n  text-decoration: none;\n  color: #01b2fe; }\n\n::selection {\n  color: #fff;\n  text-shadow: none;\n  background: #2B2E31; }\n\n.centered {\n  text-align: center; }\n\n.navbar {\n  min-height: 70px;\n  padding-top: 10px;\n  margin-bottom: 0px; }\n  .navbar .navbar-brand {\n    font-family: \"Raleway\", sans-serif;\n    font-weight: 900; }\n\n.navbar-header .navbar-brand {\n  color: white; }\n\n.navbar-default .navbar-nav > li > a {\n  color: white;\n  font-weight: 700;\n  font-size: 12px; }\n\n.navbar-default .navbar-nav > li > a:hover {\n  color: #00b3fe; }\n\n.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {\n  color: #00b3fe;\n  background-color: transparent; }\n\n.navbar-default {\n  background-color: #384452;\n  border-color: transparent; }\n\n.dropdown-menu {\n  font-family: \"Raleway\", sans-serif;\n  background: #384452; }\n  .dropdown-menu li {\n    color: white; }\n    .dropdown-menu li a {\n      color: white;\n      font-family: 'Lato', sans-serif; }\n\n.dropdown .dropdown-menu {\n  display: none;\n  position: absolute; }\n\n.dropdown:hover > ul {\n  display: inherit; }\n\n#middle {\n  background: #00b3fe;\n  margin-top: 60px;\n  margin-bottom: 60px;\n  padding-top: 25px;\n  padding-bottom: 25px; }\n  #middle .city-title {\n    color: white;\n    margin-left: 15px;\n    text-shadow: 2px 2px #384452; }\n\n.select-cinema {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  appearance: none;\n  width: auto;\n  padding: 5px 30px 5px 5px;\n  height: 34px;\n  border-radius: 5px;\n  border: 0;\n  background-color: #384452;\n  color: white;\n  font-family: \"Raleway\", sans-serif; }\n\n.title-movie {\n  font-family: \"Raleway\", sans-serif;\n  font-weight: 700;\n  font-size: 24px;\n  margin-right: 10px; }\n\n.dropdown-arrow {\n  color: #FFFFFF;\n  margin-left: -15px; }\n\n#cinema-schedule #movie-schedule {\n  border: 0;\n  width: 100%; }\n  #cinema-schedule #movie-schedule .place-title {\n    margin-bottom: 5px; }\n  #cinema-schedule #movie-schedule thead {\n    font-size: 14px;\n    font-weight: 500;\n    border-bottom: 1px solid #384452; }\n    #cinema-schedule #movie-schedule thead tr td {\n      font-weight: 700; }\n  #cinema-schedule #movie-schedule tbody tr {\n    border-collapse: separate;\n    border-radius: 0; }\n    #cinema-schedule #movie-schedule tbody tr td {\n      padding: 5px 0 8px 0;\n      border-bottom: 1px dotted #333; }\n    #cinema-schedule #movie-schedule tbody tr .label {\n      margin-right: 10px; }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #ffffff;\n  margin: 0;\n  height: 100%;\n  color: #384452;\n  font-family: 'Lato', sans-serif;\n  font-weight: 400; }\n\nh1, h2, h3, h4, h5, h6 {\n  font-family: \"Raleway\", sans-serif;\n  font-weight: 700; }\n\na {\n  padding: 0;\n  margin: 0;\n  text-decoration: none;\n  transition: background-color .4s linear, color .4s linear; }\n\na:hover,\na:focus {\n  text-decoration: none;\n  color: #01b2fe; }\n\n::selection {\n  color: #fff;\n  text-shadow: none;\n  background: #2B2E31; }\n\n.centered {\n  text-align: center; }\n\n.navbar {\n  min-height: 70px;\n  padding-top: 10px;\n  margin-bottom: 0px; }\n  .navbar .navbar-brand {\n    font-family: \"Raleway\", sans-serif;\n    font-weight: 900; }\n\n.navbar-header .navbar-brand {\n  color: white; }\n\n.navbar-default .navbar-nav > li > a {\n  color: white;\n  font-weight: 700;\n  font-size: 12px; }\n\n.navbar-default .navbar-nav > li > a:hover {\n  color: #00b3fe; }\n\n.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {\n  color: #00b3fe;\n  background-color: transparent; }\n\n.navbar-default {\n  background-color: #384452;\n  border-color: transparent; }\n\n.dropdown-menu {\n  font-family: \"Raleway\", sans-serif;\n  background: #384452; }\n  .dropdown-menu li {\n    color: white; }\n    .dropdown-menu li a {\n      color: white;\n      font-family: 'Lato', sans-serif; }\n\n.dropdown .dropdown-menu {\n  display: none;\n  position: absolute; }\n\n.dropdown:hover > ul {\n  display: inherit; }\n\n#middle {\n  background: #00b3fe;\n  margin-top: 60px;\n  margin-bottom: 60px;\n  padding-top: 25px;\n  padding-bottom: 25px; }\n  #middle .city-title {\n    color: white;\n    margin-left: 15px;\n    text-shadow: 2px 2px #384452; }\n\n.select-cinema {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  appearance: none;\n  width: auto;\n  padding: 5px 30px 5px 5px;\n  height: 34px;\n  border-radius: 5px;\n  border: 0;\n  background-color: #384452;\n  color: white;\n  font-family: \"Raleway\", sans-serif; }\n\n.title-movie {\n  font-family: \"Raleway\", sans-serif;\n  font-weight: 700;\n  font-size: 24px;\n  margin-right: 10px; }\n\n.dropdown-arrow {\n  color: #FFFFFF;\n  margin-left: -15px; }\n\n#footerwrap {\n  padding-top: 60px;\n  padding-bottom: 60px;\n  background: #384452; }\n\n#footerwrap p {\n  color: #bfc9d3; }\n\n#footerwrap h4 {\n  color: white; }\n\n#footerwrap i {\n  font-size: 30px;\n  color: #bfc9d3;\n  padding-right: 25px; }\n\n#footerwrap i:hover {\n  color: #00b3fe; }\n\n#cinema-schedule #movie-schedule {\n  border: 0;\n  width: 100%; }\n  #cinema-schedule #movie-schedule .place-title {\n    margin-bottom: 5px; }\n  #cinema-schedule #movie-schedule thead {\n    font-size: 14px;\n    font-weight: 500;\n    border-bottom: 1px solid #384452; }\n    #cinema-schedule #movie-schedule thead tr td {\n      font-weight: 700; }\n  #cinema-schedule #movie-schedule tbody tr {\n    border-collapse: separate;\n    border-radius: 0; }\n    #cinema-schedule #movie-schedule tbody tr td {\n      padding: 5px 0 8px 0;\n      border-bottom: 1px dotted #333; }\n    #cinema-schedule #movie-schedule tbody tr .label {\n      margin-right: 10px; }\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 14 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	/*
@@ -14284,7 +14388,7 @@
 
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*

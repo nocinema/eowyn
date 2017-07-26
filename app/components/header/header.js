@@ -14,7 +14,7 @@ const HeaderComponent = Vue.extend({
         }
     },
     beforeMount() {
-         this.$http.get('http://localhost:3000/cidades')
+         this.$http.get(`${API_URL}/cidades`)
           .then((response) => {
               this.cities = response.data;
           })

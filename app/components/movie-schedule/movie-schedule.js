@@ -8,6 +8,7 @@ import template from './movie-schedule.template.html';
 // Use of vue resources
 Vue.use(http);
 
+console.log('API ', API_URL)
 // Intance of movie schedule component
 const MovieScheduleComponent = Vue.component('movie-schedule', {
     template,
@@ -22,7 +23,7 @@ const MovieScheduleComponent = Vue.component('movie-schedule', {
     },
     methods: {
         fetchSchedules() {
-            this.$http.get(`http://localhost:3000/programacao/cidade/${this.$route.params.city}`)
+            this.$http.get(`${API_URL}/programacao/cidade/${this.$route.params.city}`)
               .then((response) => {
                   this.schedules = response.data;
               })
@@ -30,7 +31,7 @@ const MovieScheduleComponent = Vue.component('movie-schedule', {
                   console.log(err);
             });
 
-            this.$http.get(`http://localhost:3000/programacao/cidade/${this.$route.params.city}/proxima`)
+            this.$http.get(`${API_URL}/programacao/cidade/${this.$route.params.city}/proxima`)
               .then((response) => {
                   this.next = response.data;
               })
